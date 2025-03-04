@@ -5,7 +5,7 @@ export class Register {
     @PrimaryGeneratedColumn()
     id:number 
 
-    @Column()
+    @Column({unique:true})
     name:string
 
     @Column({unique:true})

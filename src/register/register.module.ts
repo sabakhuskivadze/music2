@@ -9,5 +9,6 @@ import { Register } from './entities/register.entity';
   imports:[TypeOrmModule.forFeature([Register])],
   controllers: [RegisterController],
   providers: [RegisterService,RegisterRepository],
+  exports:[RegisterRepository]
 })
 export class RegisterModule {}

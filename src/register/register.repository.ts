@@ -4,15 +4,19 @@ import { UpdateRegisterDto } from "./dto/update-register.dto";
 import { Repository } from "typeorm";
 import { Register } from "./entities/register.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class RegisterRepository {
     constructor( @InjectRepository(Register) private readonly repository:Repository<Register>){}
     async create(createRegisterDto: CreateRegisterDto) {
-       const user = this.repository.create(createRegisterDto)
+      const hashedPassword = await bcrypt.hash(createRegisterDto.password,10)
+       
+      const newuser = new Register()
+      newuser.email = createRegisterDto.email
+      newuser.name = createRegisterDto.name
+      newuser.password = hashedPassword
 
-       return await this.repository.save(user)
+       return await this.repository.save(newuser)
       }
     
       async findAll() {
@@ -39,5 +43,12 @@ export class RegisterRepository {
     
       async remove(id: number) {
         return await this.repository.softDelete(id)
+      }
+
+      async searchEmail(email:string) {
+        return await this.repository
+        .createQueryBuilder("register")
+        .where("register.email = :email",{email})
+        .getOne()
       }
 }

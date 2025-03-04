@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RegisterModule } from './register/register.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: 'musicweb',
       autoLoadEntities: true,
       synchronize: true,
-    }),RegisterModule],
+    }),RegisterModule, AuthModule],
 })
 export class AppModule {}
